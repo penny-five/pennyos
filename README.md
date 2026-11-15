@@ -8,6 +8,7 @@ colours, Montserrat) and installed as `com.pennyos.home`. Push its look with `TV
 
 - [TV notes and debloat list](examples/philips-55pos9002/README.md)
 - [Launcher settings](launcher/app/src/main/res/values/config.xml) and [guide](docs/launcher.md)
+- [Optional Vincit market-data companion and header panel](market-data/README.md)
 - [Restore instructions](docs/restore.md)
 
 Before changing the TV, follow [PROMPT.md](PROMPT.md): back up first, disable rather than

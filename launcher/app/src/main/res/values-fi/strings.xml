@@ -10,10 +10,10 @@
     <string name="live_tv">TV-kanavat</string>
     <string name="no_inputs">Lähteitä ei löytynyt</string>
     <string name="more_inputs">Lisää lähteitä</string>
-    <string name="good_morning">Hyvää huomenta</string>
-    <string name="good_afternoon">Hyvää iltapäivää</string>
-    <string name="good_evening">Hyvää iltaa</string>
-    <string name="good_night">Hyvää yötä</string>
+    <string name="good_morning">Good morning ladies and playboys, boys and girls.</string>
+    <string name="good_afternoon">Jos ei jaksa niin koittakaa vaan jaksaa.</string>
+    <string name="good_evening">Ei tästä nyt mitään tuu, mut tulee tästä nyt jotain.</string>
+    <string name="good_night">Näihin kuviin ja näihin tunnelmiin täältä tähän.</string>
     <string name="festival_halloween_greeting">Hauskaa halloweenia</string>
     <string name="ethernet">Ethernet</string>
     <string name="offline">Ei yhteyttä</string>
@@ -129,4 +129,6 @@
     <string name="clock_format_system">Järjestelmä</string>
     <string name="clock_format_12">12-tuntinen</string>
     <string name="clock_format_24">24-tuntinen</string>
+    <string name="stock_waiting">Odotetaan kurssitietoja</string>
+    <string name="stock_as_of">Yahoo Finance · %1$s EET/EEST · viivästetty</string>
 </resources>

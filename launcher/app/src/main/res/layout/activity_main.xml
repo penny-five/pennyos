@@ -181,7 +181,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/topButtons"
                 android:layout_marginEnd="16dp"
                 android:orientation="vertical">
 
@@ -331,9 +330,30 @@
                             android:textAllCaps="true"
                             android:visibility="gone" />
                     </LinearLayout>
+                    <com.gathin.tvhome.StockPanelView
+                        android:id="@+id/stockPanel"
+                        android:layout_width="330dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="22dp"
+                        android:layout_marginBottom="8dp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
-                <!-- PennyOS: the greeting under the clock in sentence case ("Hyvää iltaa"), as in the mockups. -->
+                <LinearLayout
+                    android:id="@+id/quoteRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <com.gathin.tvhome.QuotePortraitView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:contentDescription="@null"
+                        android:importantForAccessibility="no"
+                        android:scaleType="fitCenter" />
+                <!-- PennyOS: time-of-day Niilo22 quote under the clock; longer quotes may wrap. -->
                 <TextView
                     android:id="@+id/greeting"
                     android:shadowColor="#B314102E"
@@ -341,16 +361,17 @@
                     android:shadowDy="1"
                     android:shadowRadius="10"
                     android:gravity="left"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:singleLine="true"
+                    android:maxLines="2"
                     android:ellipsize="end"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="10dp"
                     android:textColor="#D9E5EEF8"
                     android:textSize="16sp"
                     android:fontFamily="@string/font_light"
                     android:letterSpacing="0.01" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -434,10 +455,14 @@
         </RelativeLayout>
 
         <!-- The wrapper clips at the grid's edge; the grid itself must not clip so scaled tiles can overflow their cells. -->
+        <!-- PennyOS: 16dp wider on each side than the header, with 16dp more padding, so the tiles stay put and the
+             dock band (dock_even_padding) has room for the same 30dp at its ends as between its tiles. -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginStart="-16dp"
+            android:layout_marginEnd="-16dp"
             android:layout_marginTop="10dp">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -446,8 +471,8 @@
                 android:layout_height="match_parent"
                 android:paddingTop="10dp"
                 android:paddingBottom="40dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
+                android:paddingStart="26dp"
+                android:paddingEnd="26dp"
                 android:clipToPadding="false"
                 android:clipChildren="false"
                 android:overScrollMode="never"
