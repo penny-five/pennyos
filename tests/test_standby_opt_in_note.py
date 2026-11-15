@@ -120,6 +120,10 @@ class Source(unittest.TestCase):
                                   (ROOT / "launcher" / "app" / "build.gradle").read_text(encoding="utf-8"),
                                   re.M)
         cls.namespace = cls.namespace.group(1) if cls.namespace else ""
+        # The package the TV knows the launcher by (PennyOS: com.pennyos.home); the classes stay in the namespace.
+        app_id = re.search(r"getOrElse\('([^']+)'\)",
+                           (ROOT / "launcher" / "app" / "build.gradle").read_text(encoding="utf-8"))
+        cls.app_id = app_id.group(1) if app_id else cls.namespace
         # The helper that stands down is the one that calls GuardKeep.stepOut().
         cls.step_out = [path.stem for path in JAVA.glob("*.java")
                         if "GuardKeep.stepOut(" in path.read_text(encoding="utf-8")]
@@ -201,7 +205,7 @@ class TheSection(Source):
         self.assertTrue(broadcasts, "no am broadcast line")
         for line in broadcasts:
             self.assertIn(f"-a {self.action}", line, "a broadcast line does not name the action")
-            self.assertIn(f"-n {self.namespace}/.GuardConfig", line,
+            self.assertIn(f"-n {self.app_id}/{self.namespace}.GuardConfig", line,
                           "a broadcast line does not name the receiver")
         self.assertTrue(any(f"--ez {self.extra} true" in line for line in broadcasts),
                         f"no broadcast turns {self.extra} on")
@@ -215,14 +219,14 @@ class TheSection(Source):
                         f"no command enables {self.listener}")
 
     def test_the_page_gives_the_grant_that_makes_the_helper_come_back(self):
-        wanted = f"pm grant {self.namespace} {self.receiver_permission}"
+        wanted = f"pm grant {self.app_id} {self.receiver_permission}"
         self.assertTrue(any(wanted in line for line in self.commands),
                         f"no command carries {wanted!r}")
         self.assertIn(self.install_flag, self.body,
                       "the install flag that already grants it is not named")
 
     def test_the_page_names_the_helper_that_stands_down(self):
-        component = f"{self.namespace}/.{self.step_out[0]}"
+        component = f"{self.app_id}/{self.namespace}.{self.step_out[0]}"
         self.assertIn(component, self.body,
                       f"the section does not name {component}")
 

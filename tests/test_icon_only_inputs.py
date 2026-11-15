@@ -44,7 +44,8 @@ class TestIconOnlyInputsWiring(unittest.TestCase):
         self.assertIn("this.iconOnlyInputs = iconOnlyInputs", CONFIG_JAVA, "Config must store iconOnlyInputs")
 
     def test_main_activity_applies_it_with_the_shared_helper(self):
-        self.assertIn("if (cfg.iconOnlyInputs) makeIconOnly((TextView) btnInputs);", MAIN,
+        # labels_on_focus already rests the pills as icons and overrides this switch.
+        self.assertIn("if (cfg.iconOnlyInputs && !cfg.labelsOnFocus) makeIconOnly((TextView) btnInputs);", MAIN,
                       "MainActivity must make the Inputs pill icon-only with makeIconOnly, as #556 does for "
                       "Wi-Fi and Settings")
 

@@ -21,6 +21,15 @@ It needs JDK 17 and Android SDK platform 34. On macOS: `brew install openjdk@17 
 and `sdkmanager "platforms;android-34" "build-tools;34.0.0"`. On Linux the install script finds
 `~/Android/Sdk` and the `java` on your PATH.
 
+### Moving a TV from CleanYourTV's launcher to PennyOS
+
+PennyOS installs as `com.pennyos.home`, so on a TV that already runs CleanYourTV's `com.gathin.tvhome` the
+two sit side by side. Install PennyOS with `launcher/build-and-install.sh`, confirm it is Home
+(`tools/tv.py 'dumpsys activity activities' | grep mFocusedApp` shows
+`com.pennyos.home/com.gathin.tvhome.MainActivity`), then remove the old one with
+`tools/tv.py 'pm uninstall com.gathin.tvhome'`. That is the sideloaded launcher, not a system package. A theme
+pushed to the old launcher stays with it: push `themes/pennyos` (or your own) again.
+
 ## Configure
 
 [`config.xml`](../launcher/app/src/main/res/values/config.xml) sets:
@@ -78,7 +87,7 @@ home picker.
 
 This checkout keeps English and Finnish for the Philips 55POS9002/12. The launcher follows the TV's
 language and falls back to English for other languages. Android 13+ can set the app's language alone:
-`tools/tv.py 'cmd locale set-app-locales com.gathin.tvhome --locales fi'`.
+`tools/tv.py 'cmd locale set-app-locales com.pennyos.home --locales fi'`.
 
 ## Module cards
 
@@ -93,7 +102,7 @@ contract: [`docs/specs/card.md`](specs/card.md). Ready-made ones are in [`addons
 Pick "Clock" in the TV's screensaver settings, or over ADB:
 
 ```bash
-tools/tv.py 'settings put secure screensaver_components com.gathin.tvhome/.ClockDream; settings put secure screensaver_enabled 1'
+tools/tv.py 'settings put secure screensaver_components com.pennyos.home/com.gathin.tvhome.ClockDream; settings put secure screensaver_enabled 1'
 ```
 
 ## Remote keys

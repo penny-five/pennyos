@@ -10,9 +10,9 @@ from tools import bench
 class FrameOrderTest(unittest.TestCase):
     def measure(self, blocks, count):
         answers = {
-            "dumpsys gfxinfo com.gathin.tvhome reset": "Uptime: 1000 Realtime: 1000\n",
+            "dumpsys gfxinfo com.pennyos.home reset": "Uptime: 1000 Realtime: 1000\n",
             "input keyevent 22": "",
-            "dumpsys gfxinfo com.gathin.tvhome framestats":
+            "dumpsys gfxinfo com.pennyos.home framestats":
                 f"Uptime: 2000 Realtime: 2000\nTotal frames rendered: {count}\nJanky frames: 0\n"
                 + "".join(blocks),
             "logcat -d -b main -t 2000 | grep injectKeyEvent":
@@ -21,7 +21,7 @@ class FrameOrderTest(unittest.TestCase):
         tv = mock.Mock()
         tv.shell.side_effect = lambda command, *, retry=False: answers[command]
         with mock.patch.object(bench.time, "sleep"):
-            return bench.measure_key(tv, 22, package="com.gathin.tvhome")
+            return bench.measure_key(tv, 22, package="com.pennyos.home")
 
     def test_a_late_window_cannot_hide_the_first_response(self):
         # Android dumps renderers by ViewRoot order, not by their frames' timestamps:

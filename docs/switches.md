@@ -42,6 +42,8 @@ rule sit on its wanted list until a screenshot arrives.
 | `wifi_status_warnings` | <img src="switches/wifi_status_warnings.jpg" width="320" alt="wifi_status_warnings on a TV"> |
 | `top_bar_apps` | <img src="switches/top_bar_apps.jpg" width="320" alt="top_bar_apps on a TV"> |
 | `show_greeting` | <img src="switches/show_greeting.jpg" width="320" alt="show_greeting on a TV"> |
+| `show_wordmark` | <img src="switches/show_wordmark.jpg" width="320" alt="show_wordmark on a TV"> |
+| `labels_on_focus` | <img src="switches/labels_on_focus.jpg" width="320" alt="labels_on_focus on a TV"> |
 | `header_white` | <img src="switches/header_white.jpg" width="320" alt="header_white on a TV"> |
 | `clock_wallpaper` | <img src="switches/clock_wallpaper.jpg" width="320" alt="clock_wallpaper on a TV"> |
 | `clock_wallpaper_dim` | <img src="switches/clock_wallpaper.jpg" width="320" alt="clock_wallpaper_dim on a TV"> |

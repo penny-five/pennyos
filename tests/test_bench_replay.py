@@ -16,7 +16,7 @@ from tests import test_bench_framestats as frames
 from tests import test_bench_home as home
 from tools import bench
 
-PACKAGE = 'com.gathin.tvhome'
+PACKAGE = 'com.pennyos.home'
 COMPONENT = PACKAGE + '/.MainActivity'
 OTHER = 'com.android.tv.settings/.MainSettings'
 SERVICE = PACKAGE + '/.KeyRemapService'

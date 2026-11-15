@@ -48,7 +48,7 @@ GOOD = [
     "scan:365:inputs",
     "KEYCODE_PROG_YELLOW:mute",
     "scan:586:ignore",
-    "KEYCODE_NOTIFICATION:com.gathin.tvhome/.QuickSettingsActivity",
+    "KEYCODE_NOTIFICATION:com.pennyos.home/com.gathin.tvhome.QuickSettingsActivity",
 ]
 
 

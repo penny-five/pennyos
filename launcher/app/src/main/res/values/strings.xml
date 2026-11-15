@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Home</string>
+    <string name="app_name" translatable="false">PennyOS</string>
     <string name="inputs">Inputs</string>
     <string name="wifi">Wi-Fi</string>
     <string name="settings">Settings</string>
@@ -11,11 +11,11 @@
     <string name="live_tv">Live TV</string>
     <string name="no_inputs">No inputs found</string>
     <string name="more_inputs">More inputs</string>
-    <string name="good_morning">Good morning</string>
-    <string name="good_afternoon">Good afternoon</string>
-    <string name="good_evening">Good evening</string>
+    <string name="good_morning">Good morning ladies and playboys, boys and girls.</string>
+    <string name="good_afternoon">Jos ei jaksa niin koittakaa vaan jaksaa.</string>
+    <string name="good_evening">Ei tästä nyt mitään tuu, mut tulee tästä nyt jotain.</string>
     <string name="good_forenoon">Good late morning</string>
-    <string name="good_night">Good night</string>
+    <string name="good_night">Näihin kuviin ja näihin tunnelmiin täältä tähän.</string>
     <string name="festival_dussehra_greeting">Happy Dussehra</string>
     <string name="festival_diwali_greeting">Happy Diwali</string>
     <string name="festival_halloween_greeting">Happy Halloween</string>
@@ -47,7 +47,7 @@
     <string name="vpn">VPN</string>
     <string name="vpn_off">VPN off</string>
     <string name="home_settings">Choose default home</string>
-    <string name="home_settings_help">Select your original home to stop using CleanYourTV as Home, or CleanYourTV to switch back. The original launcher must be enabled and your TV must provide a home picker; use the restore script first if it was disabled.</string>
+    <string name="home_settings_help">Select your original home to stop using PennyOS as Home, or PennyOS to switch back. The original launcher must be enabled and your TV must provide a home picker; use the restore script first if it was disabled.</string>
     <string name="launcher_settings">Launcher settings</string>
     <string name="native_settings">Native settings</string>
     <string name="columns_label">Apps per row</string>
@@ -158,4 +158,6 @@
     <string name="clock_format_system">System</string>
     <string name="clock_format_12">12-hour</string>
     <string name="clock_format_24">24-hour</string>
+    <string name="stock_waiting">Waiting for market data</string>
+    <string name="stock_as_of">Yahoo Finance · %1$s EET/EEST · delayed</string>
 </resources>

@@ -67,6 +67,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.PopupWindow;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -182,6 +183,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private boolean animations;
     private boolean advancedEffects;
     private TextView greeting;
+    private StockPanelController stockPanel;
     private View clockBlock;
     private View btnInputs;
     /** config show_inputs_pill: false keeps the Inputs pill hidden even when the TV has inputs. */
@@ -544,18 +546,24 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // still follows the dock.
         if (!cfg.dockTitle) hero.setVisibility(View.GONE);
         greeting = findViewById(R.id.greeting);
+        StockPanelView stockView = findViewById(R.id.stockPanel);
+        if (stockView != null) stockPanel = new StockPanelController(this, stockView);
         clockBlock = findViewById(R.id.leftBlock);
         clockRefresh = new ClockRefresh(clockBlock);
         greetingColor = greeting.getCurrentTextColor();
-        if (!cfg.showGreeting) greeting.setVisibility(View.GONE);
+        if (!cfg.showGreeting) findViewById(R.id.quoteRow).setVisibility(View.GONE);
+        View wordmark = findViewById(R.id.wordmark);
+        if (wordmark != null && !cfg.showWordmark) wordmark.setVisibility(View.GONE);
         // Keep the other header layouts as designed: their extra lines change the block's centre.
         if (!cfg.showGreeting && !cfg.dateBelowClock && !cfg.shamsiDate && !cfg.lunarDate
                 && !cfg.topMenu && !getResources().getBoolean(R.bool.rtl_menu_bar)) {
             centerCompactHeader();
         }
+        centerDateOnDivider();
         if (cfg.headerWhite) {
             // The clock's own white for the date and the line before it, instead of their dimmed whites.
             ((TextView) findViewById(R.id.date)).setTextColor(Color.WHITE);
+            ((TextView) findViewById(R.id.weekday)).setTextColor(Color.WHITE);
             findViewById(R.id.clockDivider).setBackgroundColor(Color.WHITE);
         }
         if (getResources().getBoolean(R.bool.rtl_menu_bar)) {
@@ -608,6 +616,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             lunarDate.setTextSize(11f);
             date.setPadding(0, (int) (4 * density), 0, 0);
         }
+        splitWeekdayFromDate(shamsi);
         vpnApp = cfg.vpnApp;
         vpnPill = cfg.vpnPill && !cfg.topMenu;
         btnVpn = findViewById(R.id.btnVpn);
@@ -853,7 +862,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         addTopBarApps(cfg.topBarApps, cfg.launchActions);
         iconOnlyButtons = cfg.iconOnlyButtons;
         topMenu = cfg.topMenu;
-        wifiIconOnly = iconOnlyButtons && cfg.wifiLabelWidth <= 0;
+        // labels_on_focus folds every pill to its icon on its own, so the icon-only switches step aside for it.
+        wifiIconOnly = iconOnlyButtons && cfg.wifiLabelWidth <= 0 && !cfg.labelsOnFocus;
         if (cfg.wifiStatusColor) {
             wifiPlainTint = btnWifi.getCompoundDrawableTintList();
             wifiOnlineTint = getColorStateList(R.color.pill_icon_online);
@@ -880,12 +890,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             topButtons.setLayoutParams(tlp);
             topButtons.setGravity(Gravity.CENTER_VERTICAL);
         }
-        if (iconOnlyButtons) {
+        if (iconOnlyButtons && !cfg.labelsOnFocus) {
             if (cfg.wifiLabelWidth > 0) btnWifi.setMaxWidth(Math.round(cfg.wifiLabelWidth * density));
             else makeIconOnly(btnWifi);
             makeIconOnly((TextView) btnSettings);
         }
-        if (cfg.iconOnlyInputs) makeIconOnly((TextView) btnInputs);
+        if (cfg.iconOnlyInputs && !cfg.labelsOnFocus) makeIconOnly((TextView) btnInputs);
         iconOnlyVpn = vpnPill && cfg.iconOnlyVpn;
         if (iconOnlyVpn) {
             vpnPlainBackground = btnVpn.getBackground().getConstantState();
@@ -931,6 +941,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             }
         }
         if (festive) applyFestiveSkin((TextView) btnInputs, (TextView) btnSettings);
+        if (cfg.labelsOnFocus) {
+            // Last, so it wraps the focus listeners above (the advanced-effects lift, the festive bell and marigold).
+            // The VPN pill keeps its words: it is a status, and with no VPN it has no icon to fold to.
+            PillLabels.apply(Arrays.asList(btnWifi, (TextView) btnInputs, (TextView) btnReorder,
+                    (TextView) btnLibraryTop, (TextView) btnSettings), density, reducedMotion);
+        }
 
         // Hide the glass when focus leaves the tiles.
         // Taken off in onDestroy: recreate() keeps the window, and a listener left on it held every earlier Home.
@@ -1085,6 +1101,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         updateClockVisibility();
         clockRefresh.start();   // with timeReceiver: while Home is visible, paused or not
         tileRefresh.onStart();
+        if (stockPanel != null) stockPanel.start();
     }
 
     @Override
@@ -1341,6 +1358,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         handler.removeCallbacks(clockCheck);
         stopped = true;
         tileRefresh.onStop();
+        if (stockPanel != null) stockPanel.stop();
     }
 
     /**
@@ -1391,6 +1409,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         RemoteKeys.release(this);
         cancelHoldOk();
         if (gameDay != null) gameDay.shutdown();
+        if (stockPanel != null) stockPanel.close();
         unregisterReceiver(packageReceiver);
         if (openOnStartOnWake) unregisterReceiver(wakeReceiver);
         wallpaperPlayer.close();
@@ -1426,8 +1445,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     // ---- reorder ---------------------------------------------------------------------------------
 
-    /** Blue the glass turns while reorder mode is on. */
-    private static final int REORDER_ACCENT = 0xFF6EC1FF;
+    /** Lamp yellow (Tampere Häive) the glass turns while reorder mode is on; matches pill_bg's activated state. */
+    private static final int REORDER_ACCENT = 0xFFF8DE79;
 
     /**
      * Reorder mode (top-bar button). While it is on, every key comes here first:
@@ -2528,6 +2547,62 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
     }
 
+    /**
+     * The weekday on its own line above the date (DateLines). With a Shamsi line, or a date pattern that has no
+     * full weekday, the date stays one line as the language writes it and the weekday line goes. The line beside
+     * the clock grows to span both lines.
+     */
+    private void splitWeekdayFromDate(boolean shamsi) {
+        TextView weekday = findViewById(R.id.weekday);
+        TextClock date = findViewById(R.id.date);
+        if (weekday == null || date == null) return;
+        String rest = shamsi ? null : DateLines.withoutWeekday(String.valueOf(date.getFormat24Hour()));
+        if (rest == null) {
+            weekday.setVisibility(View.GONE);
+            return;
+        }
+        date.setFormat12Hour(rest);
+        date.setFormat24Hour(rest);
+        View divider = findViewById(R.id.clockDivider);
+        if (divider != null) {
+            ViewGroup.LayoutParams lp = divider.getLayoutParams();
+            lp.height = Math.round(40 * density);
+            divider.setLayoutParams(lp);
+        }
+    }
+
+    /**
+     * The weekday and date lines and the line before them sit level with the clock's digits. All three hang from
+     * the row's bottom, which left them low beside a 52sp clock. Moved by translation, so no layout pass is asked
+     * for; a date with Shamsi or lunar lines, or wrapped onto two lines, is left where the layout puts it.
+     */
+    private void centerDateOnDivider() {
+        View divider = findViewById(R.id.clockDivider);
+        TextView date = findViewById(R.id.date);
+        TextView clock = findViewById(R.id.clock);
+        if (divider == null || date == null || clock == null || clock.getParent() != date.getParent().getParent()) return;
+        View column = (View) date.getParent();
+        View shamsi = findViewById(R.id.shamsiDate);
+        View lunar = findViewById(R.id.lunarDate);
+        column.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {
+            boolean oneLine = date.getLineCount() == 1
+                    && (shamsi == null || shamsi.getVisibility() == View.GONE)
+                    && (lunar == null || lunar.getVisibility() == View.GONE);
+            if (divider.getVisibility() != View.VISIBLE || !oneLine || divider.getParent() != column.getParent()) {
+                column.setTranslationY(0f);
+                divider.setTranslationY(0f);
+                return;
+            }
+            // The middle of the clock's digits (a figure is about 0.7 em tall, standing on the baseline), so the
+            // weekday and date lines sit level with the time rather than with the bottom of its text box.
+            float digitsMiddle = clock.getTop() + clock.getBaseline() - 0.35f * clock.getTextSize();
+            float dividerMiddle = divider.getTop() + divider.getHeight() / 2f;
+            float columnMiddle = column.getTop() + column.getHeight() / 2f;
+            divider.setTranslationY(digitsMiddle - dividerMiddle);
+            column.setTranslationY(digitsMiddle - columnMiddle);
+        });
+    }
+
     /** Centre the one-row header when the greeting and extra date lines are absent (#2265). */
     private void centerCompactHeader() {
         LinearLayout clockRow = (LinearLayout) findViewById(R.id.clock).getParent();
@@ -2741,48 +2816,14 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private void updateGreeting() {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         int res;
-        // Locale-specific day parts (app language on Android 13+).
-        // Indonesian: Pagi 00-10, Siang 10-15, Sore 15-18, Malam 18-24.
-        // Spain (es-ES) and Catalan: "Buenas tardes" into the evening; "Buenas noches" from 21.
-        // Latin American Spanish (es-MX, es-AR, …) keeps the default hours: evening strings are also
-        // «Buenas noches», and there «Buenas noches» from ~17 matches local use better than Spain's 21.
-        Locale locale = getResources().getConfiguration().getLocales().get(0);
-        String lang = locale.getLanguage();
-        String country = locale.getCountry();
-        if ("in".equals(lang) || "id".equals(lang)) {
-            if (hour < 10) res = R.string.good_morning;
-            else if (hour < 15) res = R.string.good_afternoon;
-            else if (hour < 18) res = R.string.good_evening;
-            else res = R.string.good_night;
-        } else if (("es".equals(lang) && "ES".equals(country)) || "ca".equals(lang)) {
-            if (hour < 6) res = R.string.good_night;
-            else if (hour < 12) res = R.string.good_morning;
-            else if (hour < 21) res = R.string.good_afternoon;
-            else res = R.string.good_night;
-        } else if ("da".equals(lang)) {
-            // Danish day parts: "Godmorgen" until 11, then "God formiddag" to noon.
-            if (hour < 5) res = R.string.good_night;
-            else if (hour < 11) res = R.string.good_morning;
-            else if (hour < 12) res = R.string.good_forenoon;
-            else if (hour < 18) res = R.string.good_afternoon;
-            else if (hour < 22) res = R.string.good_evening;
-            else res = R.string.good_night;
-        } else {
-            if (hour < 5) res = R.string.good_night;
-            else if (hour < 12) res = R.string.good_morning;
-            else if (hour < 17) res = R.string.good_afternoon;
-            else if (hour < 22) res = R.string.good_evening;
-            else res = R.string.good_night;
-        }
-        String festiveGreeting = festive ? festival.greetingText(getResources()) : "";
-        if (!festiveGreeting.isEmpty()) {
-            greeting.setText(festiveGreeting);
-            greeting.setTextColor(liftTowardsWhite(festival.accentColor(), 0.25f));
-        } else {
-            greeting.setText(greetingName.isEmpty() ? getString(res)
-                    : getString(R.string.greeting_with_name, getString(res), greetingName));
-            greeting.setTextColor(greetingColor);
-        }
+        // PennyOS: Niilo22 quotes follow the TV's local time, in either app language.
+        if (hour < 5) res = R.string.good_night;
+        else if (hour < 11) res = R.string.good_morning;
+        else if (hour < 17) res = R.string.good_afternoon;
+        else if (hour < 22) res = R.string.good_evening;
+        else res = R.string.good_night;
+        greeting.setText(getString(res));
+        greeting.setTextColor(greetingColor);
         if (shamsi) shamsiDate.setText(Shamsi.today(getResources()));
         if (lunar) lunarDate.setText(Lunar.today(getResources(), lunarOffset));
     }

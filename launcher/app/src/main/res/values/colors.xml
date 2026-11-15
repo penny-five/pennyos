@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PennyOS colours: Holo glass over the river-city wallpaper, with a light Tampere touch. The brick, water, pink,
+     sky and lamp tones are from the Tampere.Finland palette (Tunnelma, Tumma vesi, Muutos, Vaalea taivas, Häive);
+     the indigo is the wallpaper's own sky. -->
+<resources>
+    <color name="penny_ink">#FF14102E</color>
+    <color name="penny_brick">#FFC83E36</color>
+    <color name="penny_water">#FF22437B</color>
+    <color name="penny_pink">#FFCB4A6C</color>
+    <color name="penny_sky">#FF88BCE7</color>
+    <color name="penny_lamp">#FFF8DE79</color>
+    <color name="penny_mist">#FFE5EEF8</color>
+</resources>

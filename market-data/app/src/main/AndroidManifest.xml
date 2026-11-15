@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Only this companion fetches public prices; Home remains offline. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application android:label="PennyOS Market Data" android:allowBackup="false"
+        android:usesCleartextTraffic="false">
+        <provider android:name=".QuoteProvider" android:authorities="com.pennyos.marketdata.quotes"
+            android:exported="true" />
+        <service android:name=".RefreshJob" android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true" />
+    </application>
+</manifest>

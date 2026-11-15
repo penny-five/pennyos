@@ -434,24 +434,14 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         name.setLayoutParams(nameLp);
         // A sideways row would stretch a match_parent item across the whole screen: give it a grid column's width.
         if (singleRow) v.getLayoutParams().width = inner / dockSize;
-        if (uniformTiles) {
-            // tvOS-style tile: a large centred mark, no caption inside the card.
-            View icon = v.findViewById(R.id.icon);
-            FrameLayout.LayoutParams iconLp = (FrameLayout.LayoutParams) icon.getLayoutParams();
-            iconLp.width = iconLp.height = Math.round(h * ICON_SHARE);
-            iconLp.bottomMargin = 0;
-            icon.setLayoutParams(iconLp);
-        } else if (h < Math.round(DESIGN_H_DP * density)) {
-            // Shrunk tiles (e.g. 5 or 6 columns): scale icon and bottom margin proportionally with tile height so the label does not overlap the icon.
-            View icon = v.findViewById(R.id.icon);
-            FrameLayout.LayoutParams iconLp = (FrameLayout.LayoutParams) icon.getLayoutParams();
-            float scale = (float) h / (DESIGN_H_DP * density);
-            iconLp.width = iconLp.height = Math.round(48f * density * scale);
-            iconLp.bottomMargin = Math.round(14f * density * scale);
-            icon.setLayoutParams(iconLp);
-            View label = v.findViewById(R.id.label);
-            label.setPadding(label.getPaddingLeft(), label.getPaddingTop(), label.getPaddingRight(), Math.round(4f * density));
-        }
+        // PennyOS: a tile without a banner is art like one with a banner, as in the mockups: a large centred mark on
+        // a backdrop in the app's colours, no caption inside the card (the title above the dock names it). The
+        // uniform_tiles treatment, kept for these tiles only; uniform_tiles still turns every banner into one.
+        View icon = v.findViewById(R.id.icon);
+        FrameLayout.LayoutParams iconLp = (FrameLayout.LayoutParams) icon.getLayoutParams();
+        iconLp.width = iconLp.height = Math.round(h * ICON_SHARE);
+        iconLp.bottomMargin = 0;
+        icon.setLayoutParams(iconLp);
         return new Holder(v, listener, animations, advancedEffects, reducedMotion, restNameAlpha, focusOvershoot);
     }
 
@@ -491,7 +481,7 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         // A fully opaque banner covers the whole card (centerCrop), so the card's own fill under it is drawn for
         // nothing on every frame; keep it under banners with transparent parts and under icon tiles.
         h.card.setBackground(e.banner != null && e.banner.getOpacity() == PixelFormat.OPAQUE ? null : h.cardBackground);
-        if (uniformTiles && e.banner == null) {
+        if (e.banner == null) {
             if (e.backdrop == null) e.backdrop = backdrop(e.icon, ambientColorAt(position));
             h.card.setBackground(new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, e.backdrop));
         }
@@ -507,7 +497,7 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             h.icon.setImageDrawable(e.icon);
             h.icon.setVisibility(View.VISIBLE);
             h.label.setText(e.label);
-            h.label.setVisibility(uniformTiles ? View.GONE : View.VISIBLE);
+            h.label.setVisibility(View.GONE);
         }
         h.card.setOnClickListener(v -> launch(e));
         h.card.setOnLongClickListener(v -> {
