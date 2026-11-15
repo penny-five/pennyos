@@ -6,18 +6,19 @@
             <corners android:radius="21dp" />
         </shape>
     </item>
-    <!-- Reorder button while reorder mode is on (focus is on the tiles then). -->
+    <!-- Reorder button while reorder mode is on (focus is on the tiles then): lamp yellow. -->
     <item android:state_activated="true">
         <shape android:shape="rectangle">
-            <solid android:color="#596EC1FF" />
-            <stroke android:width="1.5dp" android:color="#FF6EC1FF" />
+            <solid android:color="#2EF8DE79" />
+            <stroke android:width="1.5dp" android:color="@color/penny_lamp" />
             <corners android:radius="21dp" />
         </shape>
     </item>
+    <!-- Dark-water glass, so the white label reads over a bright wallpaper too. -->
     <item>
         <shape android:shape="rectangle">
-            <gradient android:angle="270" android:startColor="#2EFFFFFF" android:endColor="#14FFFFFF" />
-            <stroke android:width="1dp" android:color="#38FFFFFF" />
+            <gradient android:angle="270" android:startColor="#9E22437B" android:endColor="#8C14102E" />
+            <stroke android:width="1dp" android:color="#42E5EEF8" />
             <corners android:radius="21dp" />
         </shape>
     </item>

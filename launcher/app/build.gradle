@@ -7,10 +7,12 @@ android {
     compileSdk 34
 
     defaultConfig {
+        // PennyOS installs as com.pennyos.home; the Java package (namespace) stays com.gathin.tvhome, so the
+        // components are com.pennyos.home/com.gathin.tvhome.MainActivity and so on.
         // Opt-in identity for firmware with a package-name HOME allowlist.
         // Xiaomi: docs/devices/xiaomi-mitv-aetp0-dofus.md (com.ts.launcher).
         // ColorOS TV: docs/devices/oppo-k9-55-oppocnm632.md (com.oneplus.tv.launcher2).
-        applicationId providers.gradleProperty('launcherApplicationId').getOrElse('com.gathin.tvhome')
+        applicationId providers.gradleProperty('launcherApplicationId').getOrElse('com.pennyos.home')
         minSdk 26
         targetSdk 34
         versionCode 14

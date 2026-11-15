@@ -105,7 +105,7 @@ class RestoreVerifyTest(unittest.TestCase):
     def tv(self, refuse=(), home_refused=False, extra_disabled=(), short_home=False):
         self.state_path.write_text(json.dumps({
             "disabled": ["com.example.enabled", "com.example.already_off", *extra_disabled],
-            "home": "com.gathin.tvhome/com.gathin.tvhome.MainActivity",
+            "home": "com.pennyos.home/com.gathin.tvhome.MainActivity",
             "refuse": list(refuse), "home_refused": home_refused, "short_home": short_home}))
 
     def restore(self, script):

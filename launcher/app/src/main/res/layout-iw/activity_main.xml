@@ -257,6 +257,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+                    <!-- The PennyOS wordmark, as in layout/activity_main.xml; the name is Latin, so it is not mirrored. -->
+                    <ImageView
+                        android:id="@+id/wordmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:adjustViewBounds="true"
+                        android:alpha="0.92"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/wordmark" />
                     <TextView
                         android:id="@+id/greeting"
                         android:gravity="center_horizontal"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Koti</string>
     <string name="inputs">Lähteet</string>
     <string name="wifi">Wi-Fi</string>
     <string name="settings">Asetukset</string>
@@ -12,34 +11,36 @@
     <string name="no_inputs">Lähteitä ei löytynyt</string>
     <string name="more_inputs">Lisää lähteitä</string>
     <string name="good_morning">Hyvää huomenta</string>
-    <string name="good_afternoon">Hyvää päivää</string>
+    <string name="good_afternoon">Hyvää iltapäivää</string>
     <string name="good_evening">Hyvää iltaa</string>
     <string name="good_night">Hyvää yötä</string>
+    <string name="festival_halloween_greeting">Hauskaa halloweenia</string>
     <string name="ethernet">Ethernet</string>
     <string name="offline">Ei yhteyttä</string>
     <string name="not_available">Ei käytettävissä tässä televisiossa</string>
     <string name="cant_open">Ei voitu avata: %1$s</string>
-    <!-- Finnish: "tiistaina 20. lokakuuta"; the weekday comes out in the essive form. -->
-    <string name="date_format">EEEE d. MMMM</string>
+    <!-- Finnish: "tiistai 20. lokakuuta". cccc is the stand-alone weekday; EEEE gave the essive "tiistaina",
+         which reads as "on Tuesday" rather than a date heading. -->
+    <string name="date_format">cccc d. MMMM</string>
     <string name="dream_name">Kello</string>
     <string name="vpn">VPN</string>
     <string name="vpn_off">VPN pois päältä</string>
-    <string name="home_settings">Valitse oletuskotinäkymä</string>
-    <string name="home_settings_help">Valitse alkuperäinen kotinäkymä, jos haluat lopettaa CleanYourTV:n käytön kotinäkymänä, tai CleanYourTV palataksesi siihen. Alkuperäisen käynnistimen on oltava käytössä ja television on tarjottava kotinäkymän valinta. Jos käynnistin on poistettu käytöstä, aja ensin palautusskripti.</string>
+    <string name="home_settings">Valitse aloitusnäyttö</string>
+    <string name="home_settings_help">Valitse alkuperäinen aloitusnäyttö, jos haluat lopettaa PennyOS:n käytön aloitusnäyttönä, tai PennyOS palataksesi siihen. Alkuperäisen käynnistimen on oltava käytössä ja television on tarjottava aloitusnäytön valinta. Jos käynnistin on poistettu käytöstä, aja ensin palautusskripti.</string>
     <string name="launcher_settings">Käynnistimen asetukset</string>
     <string name="native_settings">Valmistajan asetukset</string>
     <string name="columns_label">Sovelluksia rivillä</string>
-    <string name="dock_opacity_label">Telakkapalkin peittävyys</string>
+    <string name="dock_opacity_label">Telakan peittävyys</string>
     <string name="animations_state">Animaatiot: %1$s</string>
     <string name="advanced_effects">Lisätehosteet</string>
     <string name="advanced_effects_state">Lisätehosteet: %1$s</string>
-    <string name="open_on_start_label">Avaa käynnistettäessä</string>
-    <string name="open_on_start_state">Avaa käynnistettäessä: %1$s</string>
-    <string name="advanced_effects_warning">Lisää ruudun noston, kuvakkeen zoomauksen ja pehmeät värisiirtymät. Voi lisätä muistinkäyttöä; todellinen ero riippuu televisiosta.</string>
+    <string name="open_on_start_label">Avaa TV:n käynnistyessä</string>
+    <string name="open_on_start_state">Avaa TV:n käynnistyessä: %1$s</string>
+    <string name="advanced_effects_warning">Ottaa käyttöön ruudun noston, kuvakkeen zoomauksen ja pehmeät värisiirtymät. Voi lisätä muistinkäyttöä; todellinen ero riippuu televisiosta.</string>
     <string name="follow_theme">Noudata teemaa (nollaa televisiossa tehdyt valinnat)</string>
     <string name="follow_theme_hint">Käyttää nykyisen teeman tai sisäänrakennettuja asettelu- ja liikeasetuksia. Teeman lähettäminen tai nollaaminen poistaa myös televisiossa tehdyt valinnat.</string>
     <string name="tv_settings">Television järjestelmäasetukset</string>
-    <string name="quick_picture">Näyttö</string>
+    <string name="quick_picture">Kuva</string>
     <string name="quick_network">Verkko</string>
     <string name="quick_apps">Sovellukset</string>
     <string name="quick_apps_hint">Ota uudelleen käyttöön</string>
@@ -50,10 +51,10 @@
     <string name="home_key_name">Koti-painike</string>
     <string name="home_key_description">Kaukosäätimen Koti-painike avaa tämän käynnistimen.</string>
     <string name="card_prompt_title">Uusi kortti sovellukselta %1$s</string>
-    <string name="card_prompt_body">%1$s voi näyttää kortin kotinäkymässäsi. Jos pidät sen piilossa, sovelluksen tavallinen ruutu pysyy ennallaan.</string>
+    <string name="card_prompt_body">%1$s voi näyttää kortin aloitusnäytölläsi. Jos pidät sen piilossa, sovelluksen tavallinen ruutu pysyy ennallaan.</string>
     <string name="card_prompt_names">Kortin nimi on ”%1$s”. Sovellus on ”%2$s”.</string>
-    <string name="card_prompt_resigned">%1$s on päivitetty eri allekirjoitusavaimella, joten aiempi vastauksesi ei ole enää voimassa. Päätä sen kortista uudelleen.</string>
-    <string name="card_prompt_relabelled">%1$s on vaihtanut korttinsa nimen päätöksesi jälkeen. Päätä siitä uudelleen.</string>
+    <string name="card_prompt_resigned">%1$s on päivitetty eri allekirjoitusavaimella, joten aiempi vastauksesi ei ole enää voimassa. Valitse uudelleen, näytetäänkö sen kortti.</string>
+    <string name="card_prompt_relabelled">%1$s on vaihtanut korttinsa nimeä valintasi jälkeen. Valitse uudelleen.</string>
     <string name="card_prompt_hint">Voit muuttaa tätä myöhemmin: pidä OK-painiketta pohjassa Asetukset-kohdassa ja valitse Moduulikortit.</string>
     <string name="card_prompt_identity">%1$s, avain %2$s</string>
     <string name="card_keep_hidden">Pidä piilossa</string>
@@ -72,21 +73,23 @@
     <string name="stats_cpu">Suoritin %1$d %%</string>
     <string name="stats_memory">Muisti %1$d / %2$d Mt</string>
     <string name="stats_storage">Tallennustilaa vapaana %1$s</string>
+    <string name="storage_gb_decimal">%1$.1f Gt</string>
+    <string name="storage_gb_whole">%1$.0f Gt</string>
     <string name="reorder">Järjestä sovellukset</string>
     <string name="tile_move">Siirrä</string>
     <string name="reorder_hint">OK nostaa sovelluksen, nuolet siirtävät sitä ja Takaisin laskee sen paikalleen. Lopeta painamalla Takaisin uudelleen.</string>
     <string name="reorder_not_saved">Uutta järjestystä ei voitu tallentaa</string>
     <string name="app_library">Sovelluskirjasto</string>
     <string name="library_empty">Käynnistettäviä sovelluksia ei löytynyt</string>
-    <string name="library_on_home">Kotinäkymässä</string>
-    <string name="library_add_home">Lisää kotinäkymään</string>
-    <string name="library_remove_shortcut">Poista kotinäkymästä</string>
+    <string name="library_on_home">Aloitusnäytöllä</string>
+    <string name="library_add_home">Lisää aloitusnäyttöön</string>
+    <string name="library_remove_shortcut">Poista aloitusnäytöltä</string>
     <string name="library_open">Avaa</string>
     <string name="library_app_info">Sovelluksen tiedot</string>
     <string name="library_save_failed">Pikakuvaketta ei voitu tallentaa</string>
-    <string name="library_recent">Uusi · Lisää kotinäkymään</string>
-    <string name="library_hint_add">Lisää kotinäkymään painamalla · Pidä pohjassa: valinnat</string>
-    <string name="library_hint_open">Avaa painamalla · Pidä pohjassa: valinnat</string>
+    <string name="library_recent">Uusi · Lisää aloitusnäyttöön</string>
+    <string name="library_hint_add">Paina: lisää aloitusnäyttöön · Pidä pohjassa: valinnat</string>
+    <string name="library_hint_open">Paina: avaa · Pidä pohjassa: valinnat</string>
     <plurals name="library_app_count">
         <item quantity="one">%1$d sovellus</item>
         <item quantity="other">%1$d sovellusta</item>
@@ -94,7 +97,7 @@
     <string name="dock_edit">Muokkaa telakkaa</string>
     <string name="power_menu">Käynnistä uudelleen…</string>
     <string name="dock_edit_hint">Valitse muutettava telakan paikka ja paina OK. Takaisin lopettaa.</string>
-    <string name="dock_edit_pick_app">Valitse nyt sinne tuleva sovellus ja paina OK. Takaisin valitsee toisen paikan.</string>
+    <string name="dock_edit_pick_app">Valitse paikalle tuleva sovellus ja paina OK. Takaisin valitsee toisen paikan.</string>
     <string name="tile_add_to_dock">Lisää telakkaan</string>
     <string name="tile_replace_in_dock">Korvaa toisella sovelluksella</string>
     <string name="dock_edit_pick_place">Valitse telakan paikka tälle sovellukselle ja paina OK. Takaisin peruuttaa.</string>
@@ -106,13 +109,24 @@
     <string name="wallpaper_theme_default">Teeman oletus</string>
     <string name="race_kicker">Osakilpailu %1$d · %2$s · %3$s</string>
     <string name="race_kicker_no_place">Osakilpailu %1$d · %2$s</string>
-    <string name="race_next">%1$s alkuun %2$s</string>
+    <string name="race_next">%1$s alkaa %2$s päästä</string>
     <string name="race_lights_out">Lähtöön %1$s</string>
     <string name="race_live">%1$s · käynnissä</string>
     <string name="race_finished">Ruutulippu</string>
+    <!-- The short codes (FP1, QUALI, SQ…) stay as the English ones Finnish F1 coverage also uses. -->
+    <string name="race_practice_1">Harjoitukset 1</string>
+    <string name="race_practice_2">Harjoitukset 2</string>
+    <string name="race_practice_3">Harjoitukset 3</string>
+    <string name="race_sprint_qualifying">Sprintin aika-ajot</string>
+    <string name="race_sprint">Sprintti</string>
+    <string name="race_qualifying">Aika-ajot</string>
+    <string name="race_race">Kilpailu</string>
+    <string name="race_countdown_minutes">%1$d min</string>
+    <string name="race_countdown_hours">%1$d h %2$d min</string>
+    <string name="race_countdown_days">%1$d pv %2$d h</string>
     <string name="last_opened">Viimeksi avattu %1$s</string>
     <string name="game_live">Käynnissä nyt</string>
     <string name="clock_format_system">Järjestelmä</string>
-    <string name="clock_format_12">12 tuntia</string>
-    <string name="clock_format_24">24 tuntia</string>
+    <string name="clock_format_12">12-tuntinen</string>
+    <string name="clock_format_24">24-tuntinen</string>
 </resources>

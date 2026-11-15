@@ -35,7 +35,7 @@ that hands out `tools/check.py` as a command has to name the venv's Python in fr
 spell it the way `docs/firmware-updates.md` does, and `tests/test_documented_tool_commands.py` reads
 the pages but not these files - a list header is plain text, not a code span.
 
-Two xgimi-horizon-20 details are worth keeping: its check line also named `com.gathin.tvhome` where
+Two xgimi-horizon-20 details are worth keeping: its check line also named `com.pennyos.home` where
 `docs/firmware-updates.md` wants the launcher Home stays on, which on a `stock_home_redirect` set is
 the stock launcher (the header says Home still resolves to `com.google.android.apps.tv.launcherx`,
 and its own Undo line names that package), so every run would report Home as drift and `--fix` would

@@ -72,7 +72,8 @@ def ui_names(strings, java):
         raise AssertionError("Cards.uiNames() names no resources; has it been rewritten?")
     out = {}
     for name in ids:
-        match = re.search(r'<string name="%s">(.*?)</string>' % re.escape(name), strings, re.S)
+        # app_name carries translatable="false" (PennyOS is one name in every language), so allow attributes.
+        match = re.search(r'<string name="%s"[^>]*>(.*?)</string>' % re.escape(name), strings, re.S)
         if not match:
             raise AssertionError(f"values/strings.xml has no string named {name}")
         text = match.group(1).replace("\\'", "'").replace("&amp;", "&")

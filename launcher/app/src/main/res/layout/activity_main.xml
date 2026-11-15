@@ -185,6 +185,18 @@
                 <!-- The header texts use gravity left, not start: the launcher lays out left to right
                      (no supportsRtl), and with start a right-to-left script such as Arabic would move to the
                      right edge of these full-width lines instead of staying under the clock. -->
+                <!-- The PennyOS wordmark, a vector (Montserrat ExtraBold letters as paths, no font load). -->
+                <ImageView
+                    android:id="@+id/wordmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="10dp"
+                    android:adjustViewBounds="true"
+                    android:alpha="0.92"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/wordmark" />
+
                 <TextView
                     android:id="@+id/greeting"
                     android:gravity="left"

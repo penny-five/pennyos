@@ -29,7 +29,7 @@ spec = importlib.util.spec_from_file_location("cyt_flamechart", ROOT / "tools" /
 flamechart = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(flamechart)
 
-PKG = "com.gathin.tvhome"
+PKG = "com.pennyos.home"
 MS = 1_000_000
 
 
@@ -55,8 +55,8 @@ def fake_trace(extra_threads=()):
         create table slice (id integer primary key, ts integer, dur integer, depth integer, name text,
                             track_id integer, parent_id integer);
         create table actual_frame_timeline_slice (ts integer, dur integer, upid integer, jank_type text);
-        insert into process values (2, 100, 'com.gathin.tvhome');
-        insert into thread values (1, 2, 100, 'com.gathin.tvhome'), (2, 2, 101, 'RenderThread');
+        insert into process values (2, 100, 'com.pennyos.home');
+        insert into thread values (1, 2, 100, 'com.pennyos.home'), (2, 2, 101, 'RenderThread');
         insert into thread_track values (10, 1), (20, 2);
     """)
     rows = [(1, 1000, 5, 0, "performStart:x", 10, None), (2, 1005, 30, 0, "activityResume", 10, None),

@@ -548,6 +548,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         clockRefresh = new ClockRefresh(clockBlock);
         greetingColor = greeting.getCurrentTextColor();
         if (!cfg.showGreeting) greeting.setVisibility(View.GONE);
+        View wordmark = findViewById(R.id.wordmark);
+        if (wordmark != null && !cfg.showWordmark) wordmark.setVisibility(View.GONE);
         // Keep the other header layouts as designed: their extra lines change the block's centre.
         if (!cfg.showGreeting && !cfg.dateBelowClock && !cfg.shamsiDate && !cfg.lunarDate
                 && !cfg.topMenu && !getResources().getBoolean(R.bool.rtl_menu_bar)) {
@@ -1426,8 +1428,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     // ---- reorder ---------------------------------------------------------------------------------
 
-    /** Blue the glass turns while reorder mode is on. */
-    private static final int REORDER_ACCENT = 0xFF6EC1FF;
+    /** Lamp yellow (Tampere Häive) the glass turns while reorder mode is on; matches pill_bg's activated state. */
+    private static final int REORDER_ACCENT = 0xFFF8DE79;
 
     /**
      * Reorder mode (top-bar button). While it is on, every key comes here first:

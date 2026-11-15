@@ -26,7 +26,7 @@ from unittest import mock
 
 from tools import bench
 
-OURS = "com.gathin.tvhome/.KeyRemapService"
+OURS = "com.pennyos.home/com.gathin.tvhome.KeyRemapService"
 OTHER = "com.exemplo.outroapp/.Servico"
 
 
@@ -59,25 +59,25 @@ class FakeTV:
 class RestoreAccessibilityTest(unittest.TestCase):
     def test_another_apps_service_is_kept(self):
         tv = FakeTV("com.outro.novo/.Svc")
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         self.assertEqual(tv.setting, f"com.outro.novo/.Svc:{OURS}")
 
     def test_does_not_add_the_same_service_twice(self):
         tv = FakeTV(OURS)
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         self.assertEqual(tv.setting, OURS)
         self.assertEqual([c for c in tv.commands if c.startswith("settings put ")], [],
                          "nothing to write means nothing written")
 
     def test_short_and_long_component_forms_are_the_same_component(self):
         """The TV rewrites `pkg/pkg.Classe` as `pkg/.Classe`; restoring must not duplicate it."""
-        tv = FakeTV("com.gathin.tvhome/com.gathin.tvhome.KeyRemapService")
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        tv = FakeTV("com.pennyos.home/com.gathin.tvhome.KeyRemapService")
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         self.assertEqual(tv.setting.count("KeyRemapService"), 1, tv.setting)
 
     def test_null_setting_is_treated_as_empty(self):
         tv = FakeTV("null")
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         self.assertEqual(tv.setting, OURS)
 
 
@@ -85,7 +85,7 @@ def services_dump(component, bound):
     """`dumpsys activity services <package>` for one service, as AOSP prints it on Android 8/11/14."""
     return f'''  * ServiceRecord{{a1 u0 {component}}}
     intent={{cmp={component}}}
-    app=ProcessRecord{{b2 1234:com.gathin.tvhome/u0a101}}
+    app=ProcessRecord{{b2 1234:com.pennyos.home/u0a101}}
     * IntentBindRecord{{c3 CREATE}}:
       intent={{cmp={component}}}
       binder={'android.os.BinderProxy@d4' if bound else 'null'}
@@ -124,7 +124,7 @@ class ListedButUnboundTest(unittest.TestCase):
 
     def test_a_listed_helper_that_is_not_bound_is_bound_again(self):
         tv = ListedTV(f"{OTHER}:{OURS}", bound=False)
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         writes = self.writes(tv)
         self.assertEqual(len(writes), 1, tv.commands)
         cycle = writes[0]
@@ -140,7 +140,7 @@ class ListedButUnboundTest(unittest.TestCase):
 
     def test_the_tv_puts_the_list_back_by_itself_if_the_connection_drops(self):
         tv = ListedTV(f"{OTHER}:{OURS}", bound=False)
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         cycle = self.writes(tv)[0]
         self.assertLess(cycle.index("trap cyt_restore EXIT;"),
                         cycle.index("enabled_accessibility_services ''"), cycle)
@@ -155,13 +155,13 @@ class ListedButUnboundTest(unittest.TestCase):
             return "" if command.startswith("cyt_restore() ") else out
         tv.shell = refused
         with self.assertRaisesRegex(RuntimeError, "could not be put back"):
-            bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+            bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
 
     def test_a_helper_put_back_on_the_list_and_still_unbound_is_bound_again(self):
         """What the 43C645 does: the stop empties the list, the write puts it back, nothing binds."""
         tv = ListedTV(OTHER, bound=False)
         with mock.patch.object(bench.time, "sleep"):
-            bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+            bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         writes = self.writes(tv)
         self.assertEqual(writes[0], f"settings put secure enabled_accessibility_services {OTHER}:{OURS}")
         self.assertEqual(len([w for w in writes if w.startswith("cyt_restore()")]), 1, writes)
@@ -169,23 +169,23 @@ class ListedButUnboundTest(unittest.TestCase):
     def test_a_helper_bound_after_it_is_put_back_needs_nothing_more(self):
         tv = ListedTV(OTHER, bound=True)
         with mock.patch.object(bench.time, "sleep"):
-            bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+            bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         self.assertFalse([w for w in self.writes(tv) if w.startswith("cyt_restore()")], tv.commands)
 
     def test_a_bound_helper_is_left_alone(self):
         tv = ListedTV(OURS, bound=True)
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         self.assertEqual(self.writes(tv), [], tv.commands)
 
     def test_accessibility_switched_off_stays_off(self):
         tv = ListedTV(OURS, bound=False, flag="0")
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         self.assertEqual(self.writes(tv), [], tv.commands)
         self.assertFalse([c for c in tv.commands if c.startswith("dumpsys")], tv.commands)
 
     def test_the_long_component_form_counts_as_the_same_helper(self):
-        tv = ListedTV("com.gathin.tvhome/com.gathin.tvhome.KeyRemapService", bound=True)
-        bench.restore_accessibility(tv, "com.gathin.tvhome", [OURS])
+        tv = ListedTV("com.pennyos.home/com.gathin.tvhome.KeyRemapService", bound=True)
+        bench.restore_accessibility(tv, "com.pennyos.home", [OURS])
         self.assertEqual(self.writes(tv), [], tv.commands)
 
 
@@ -199,7 +199,7 @@ class ColdStartOrderTest(unittest.TestCase):
         def spy(command, read_timeout_s=None, *, retry=False):
             if command.startswith("settings put secure enabled_accessibility_services"):
                 order.append("restore")
-            elif command.startswith("am start -W ") and command.endswith("-n com.gathin.tvhome/.MainActivity"):
+            elif command.startswith("am start -W ") and command.endswith("-n com.pennyos.home/com.gathin.tvhome.MainActivity"):
                 order.append("measure")
             return original_shell(command, read_timeout_s, retry=retry)
         tv.shell = spy
@@ -213,7 +213,7 @@ class ColdStartOrderTest(unittest.TestCase):
         tv.shell = shell_with_start
 
         with mock.patch.object(bench, "other_app", lambda _tv: "com.android.tv.settings/.MainSettings"):
-            bench.cold_start(tv, "com.gathin.tvhome/.MainActivity", 1)
+            bench.cold_start(tv, "com.pennyos.home/com.gathin.tvhome.MainActivity", 1)
 
         self.assertIn("measure", order, order)
         self.assertIn("restore", order, order)

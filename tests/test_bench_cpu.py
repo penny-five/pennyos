@@ -10,7 +10,7 @@ class IdleCpuTest(TestCase):
         tv.shell.side_effect = [before, after]
         with mock.patch.object(bench, "launcher_pid", return_value=None), \
                 mock.patch.object(bench.time, "sleep"):
-            result = bench.idle_cpu(tv, "com.gathin.tvhome", 5)
+            result = bench.idle_cpu(tv, "com.pennyos.home", 5)
         self.assertEqual(tv.shell.call_count, 2)
         return result
 

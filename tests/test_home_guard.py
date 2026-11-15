@@ -21,7 +21,7 @@ import venv
 
 ROOT = Path(__file__).resolve().parents[1]
 STOCK = "com.google.android.tvlauncher"
-CUSTOM = "com.gathin.tvhome"
+CUSTOM = "com.pennyos.home"
 PWSH = shutil.which("pwsh")
 
 # Stands in for tools/tv.py: answers the queries the disable script makes and records what a batch

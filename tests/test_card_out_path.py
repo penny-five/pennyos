@@ -48,7 +48,7 @@ CARD_SCRIPTS = {
 }
 
 # The launcher's own font: one vertical weight axis, so it is the variable TTF these scripts ask for.
-LAUNCHER_FONT = ROOT / "launcher" / "app" / "src" / "main" / "res" / "font" / "outfit.ttf"
+LAUNCHER_FONT = ROOT / "launcher" / "app" / "src" / "main" / "res" / "font" / "montserrat.ttf"
 
 HAVE_PIL = importlib.util.find_spec("PIL") is not None
 

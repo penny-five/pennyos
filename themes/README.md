@@ -39,6 +39,7 @@ updated. Add-ons with custom shell installers still need Bash; this native Windo
 | Theme | What it does | Screenshot |
 |---|---|---|
 | `default/` | The built-in look written out as JSON, as a starting point for your own | <img src="default/screenshot.jpg" width="320" alt="default theme"> |
+| `pennyos/` | PennyOS's own look: an AI-generated night view of Tampere's Tammerkoski rapids, darkened behind the clock, the buttons and the dock, a dark-water glass dock, the focus glow in the app's colour without overshoot and the PennyOS wordmark above the greeting. The wallpaper is CC0: see `pennyos/CREDITS.md` | <img src="pennyos/screenshot.jpg" width="320" alt="pennyos theme"> |
 | `dock-glass/` | A single frosted-glass dock row at the bottom: six columns with even padding, the focused app's name above it, no grid rows below, icon-only top buttons, and the app-colour glow over a near-black sky. No wallpaper of its own: add a `wallpaper.jpg` to put a picture behind the glass | <img src="dock-glass/screenshot.jpg" width="320" alt="dock-glass theme"> |
 | `ambient-glass/` | A dark five-column grid with a frosted-glass dock, round icon-only buttons, and a rotating collection of high-resolution alpine and desert landscapes. The photos are under the Unsplash License: see `ambient-glass/CREDITS.md` | <img src="ambient-glass/screenshot.jpg" width="320" alt="ambient-glass theme"> |
 | `aurora/` | A dark aurora wallpaper (teal and violet on navy, darker at the bottom) with a matching background colour | <img src="aurora/screenshot.jpg" width="320" alt="aurora theme"> |
@@ -134,6 +135,7 @@ A new key needs one there in the same pull request.
 | `locale` | string | The language the launcher shows itself in, as a language tag (`"vi"`, `"pt-BR"`, `"ar-EG-u-nu-latn"` for Arabic with Western digits), instead of the TV's: for firmware with no menu entry for a language the launcher speaks (a China-market Xiaomi offers Chinese and English only). Empty by default, which follows the TV |
 | `greeting_name` | string | A name after the greeting, e.g. `"Mr. Trịnh"` for GOOD MORNING, MR. TRỊNH; empty for the greeting alone |
 | `show_greeting` | bool | The greeting above the clock (`true` by default); `false` hides it |
+| `show_wordmark` | bool | The PennyOS wordmark, the coin and the name, above the greeting (`true` by default); `false` hides it |
 | `header_white` | bool | The date and the line between the clock and the date in the clock's full white instead of dimmed (`false` by default) |
 | `module_cards` | bool | Look for module cards and ask about them (`true`); `false` turns the feature off |
 | `reduced_motion` | bool | Calmer motion for weak GPUs: the highlight slides without bouncing and settles within 5 frames, every animation lasts 90 ms or less, names, the top shelf, the glow and the highlight appear instead of fading, and there is no tile entrance (`false` by default) |

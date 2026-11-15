@@ -22,7 +22,7 @@ from pathlib import Path
 
 from tools import bench
 
-OURS = "com.gathin.tvhome/.HomeKeyService"
+OURS = "com.pennyos.home/com.gathin.tvhome.HomeKeyService"
 OTHER = "com.exemplo.outroapp/.Servico"
 LIST = "enabled_accessibility_services"
 FLAG = "accessibility_enabled"
@@ -77,7 +77,7 @@ class RebindShellTest(unittest.TestCase):
         self.assertEqual(flag, "1")
 
     def test_a_component_with_a_dollar_sign_is_written_as_it_is(self):
-        inner = "com.gathin.tvhome/com.gathin.tvhome.Outer$Helper"
+        inner = "com.pennyos.home/com.gathin.tvhome.Outer$Helper"
         error, listed, _ = self.run_rebind([inner])
         self.assertIsNone(error)
         self.assertEqual(listed, inner)

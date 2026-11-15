@@ -23,7 +23,7 @@ MANIFEST = ROOT / "launcher" / "app" / "src" / "main" / "AndroidManifest.xml"
 GRADLE = ROOT / "launcher" / "app" / "build.gradle"
 ANDROID = "{http://schemas.android.com/apk/res/android}"
 
-LAUNCHER = "com.gathin.tvhome"
+LAUNCHER = "com.gathin.tvhome"  # the note records upstream's launcher, before the PennyOS id
 STOCK = "com.google.android.apps.tv.launcherx"
 HOME_QUERY = "cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME"
 SET_HOME = f"cmd package set-home-activity --user 0 {LAUNCHER}/.MainActivity"
@@ -175,6 +175,8 @@ class ThomsonNoteTest(unittest.TestCase):
         # the commands, as the bullet gives them.
         text = note_text()
         for command in recipe_commands():
+            # The bullet names PennyOS's package; the note quotes the session as it ran, under upstream's id.
+            command = command.replace("com.pennyos.home", LAUNCHER)
             with self.subTest(command=command):
                 self.assertIn(command, text, "the note must quote the check the bullet hands a reader")
         self.assertIn("PARTIALLY_DIRECT_BOOT_AWARE", text)

@@ -16,7 +16,9 @@ import shlex
 import sys
 import time
 
-PACKAGE = "com.gathin.tvhome"
+PACKAGE = "com.pennyos.home"
+# The classes keep the Java package the launcher was forked with, so "/.MainActivity" would not resolve.
+ACTIVITY = "com.gathin.tvhome.MainActivity"
 SERVICES = "enabled_accessibility_services"
 FLAG = "accessibility_enabled"
 ACTION = "android.accessibilityservice.AccessibilityService"
@@ -117,7 +119,7 @@ def restart(dev, pause=time.sleep):
         if home.splitlines()[-1:] and home.splitlines()[-1].startswith(PACKAGE + "/"):
             start = "-a android.intent.action.MAIN -c android.intent.category.HOME"
         else:
-            start = "-n " + PACKAGE + "/.MainActivity"
+            start = "-n " + PACKAGE + "/" + ACTIVITY
         shell(dev, f"am start --user {user} {start}")
         if not helpers:
             return
