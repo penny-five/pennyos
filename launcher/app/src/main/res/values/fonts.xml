@@ -8,4 +8,5 @@
     <string name="font_light" translatable="false">@font/montserrat_light</string>
     <string name="font_extralight" translatable="false">@font/montserrat_extralight</string>
     <string name="font_medium" translatable="false">@font/montserrat_medium</string>
+    <string name="font_semibold" translatable="false">@font/montserrat_semibold</string>
 </resources>

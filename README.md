@@ -4,7 +4,7 @@ Personal checkout of [CleanYourTV](https://github.com/Gathin23/cleanyourtv) for 
 55POS9002/12 running Android TV 8.0. Keeps English and Finnish, with a reduced test suite.
 
 The launcher is restyled as **PennyOS** (Holo glass over a night view of Tampere, Tampere brick and water
-colours, Montserrat) and installed as `com.pennyos.home`. Push its look with `tools/theme.sh themes/pennyos`.
+colours, Montserrat) and installed as `com.pennyos.home`. Push its look with `TV_HOST=<tv ip> tools/theme.sh themes/pennyos`.
 
 - [TV notes and debloat list](examples/philips-55pos9002/README.md)
 - [Launcher settings](launcher/app/src/main/res/values/config.xml) and [guide](docs/launcher.md)

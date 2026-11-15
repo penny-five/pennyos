@@ -67,6 +67,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.PopupWindow;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -555,9 +556,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                 && !cfg.topMenu && !getResources().getBoolean(R.bool.rtl_menu_bar)) {
             centerCompactHeader();
         }
+        centerDateOnDivider();
         if (cfg.headerWhite) {
             // The clock's own white for the date and the line before it, instead of their dimmed whites.
             ((TextView) findViewById(R.id.date)).setTextColor(Color.WHITE);
+            ((TextView) findViewById(R.id.weekday)).setTextColor(Color.WHITE);
             findViewById(R.id.clockDivider).setBackgroundColor(Color.WHITE);
         }
         if (getResources().getBoolean(R.bool.rtl_menu_bar)) {
@@ -610,6 +613,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             lunarDate.setTextSize(11f);
             date.setPadding(0, (int) (4 * density), 0, 0);
         }
+        splitWeekdayFromDate(shamsi);
         vpnApp = cfg.vpnApp;
         vpnPill = cfg.vpnPill && !cfg.topMenu;
         btnVpn = findViewById(R.id.btnVpn);
@@ -855,7 +859,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         addTopBarApps(cfg.topBarApps, cfg.launchActions);
         iconOnlyButtons = cfg.iconOnlyButtons;
         topMenu = cfg.topMenu;
-        wifiIconOnly = iconOnlyButtons && cfg.wifiLabelWidth <= 0;
+        // labels_on_focus folds every pill to its icon on its own, so the icon-only switches step aside for it.
+        wifiIconOnly = iconOnlyButtons && cfg.wifiLabelWidth <= 0 && !cfg.labelsOnFocus;
         if (cfg.wifiStatusColor) {
             wifiPlainTint = btnWifi.getCompoundDrawableTintList();
             wifiOnlineTint = getColorStateList(R.color.pill_icon_online);
@@ -882,12 +887,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             topButtons.setLayoutParams(tlp);
             topButtons.setGravity(Gravity.CENTER_VERTICAL);
         }
-        if (iconOnlyButtons) {
+        if (iconOnlyButtons && !cfg.labelsOnFocus) {
             if (cfg.wifiLabelWidth > 0) btnWifi.setMaxWidth(Math.round(cfg.wifiLabelWidth * density));
             else makeIconOnly(btnWifi);
             makeIconOnly((TextView) btnSettings);
         }
-        if (cfg.iconOnlyInputs) makeIconOnly((TextView) btnInputs);
+        if (cfg.iconOnlyInputs && !cfg.labelsOnFocus) makeIconOnly((TextView) btnInputs);
         iconOnlyVpn = vpnPill && cfg.iconOnlyVpn;
         if (iconOnlyVpn) {
             vpnPlainBackground = btnVpn.getBackground().getConstantState();
@@ -933,6 +938,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             }
         }
         if (festive) applyFestiveSkin((TextView) btnInputs, (TextView) btnSettings);
+        if (cfg.labelsOnFocus) {
+            // Last, so it wraps the focus listeners above (the advanced-effects lift, the festive bell and marigold).
+            // The VPN pill keeps its words: it is a status, and with no VPN it has no icon to fold to.
+            PillLabels.apply(Arrays.asList(btnWifi, (TextView) btnInputs, (TextView) btnReorder,
+                    (TextView) btnLibraryTop, (TextView) btnSettings), density, reducedMotion);
+        }
 
         // Hide the glass when focus leaves the tiles.
         // Taken off in onDestroy: recreate() keeps the window, and a listener left on it held every earlier Home.
@@ -2528,6 +2539,62 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             textLp.gravity = ((TextView) text).getGravity() & Gravity.HORIZONTAL_GRAVITY_MASK;
             text.setLayoutParams(textLp);
         }
+    }
+
+    /**
+     * The weekday on its own line above the date (DateLines). With a Shamsi line, or a date pattern that has no
+     * full weekday, the date stays one line as the language writes it and the weekday line goes. The line beside
+     * the clock grows to span both lines.
+     */
+    private void splitWeekdayFromDate(boolean shamsi) {
+        TextView weekday = findViewById(R.id.weekday);
+        TextClock date = findViewById(R.id.date);
+        if (weekday == null || date == null) return;
+        String rest = shamsi ? null : DateLines.withoutWeekday(String.valueOf(date.getFormat24Hour()));
+        if (rest == null) {
+            weekday.setVisibility(View.GONE);
+            return;
+        }
+        date.setFormat12Hour(rest);
+        date.setFormat24Hour(rest);
+        View divider = findViewById(R.id.clockDivider);
+        if (divider != null) {
+            ViewGroup.LayoutParams lp = divider.getLayoutParams();
+            lp.height = Math.round(40 * density);
+            divider.setLayoutParams(lp);
+        }
+    }
+
+    /**
+     * The weekday and date lines and the line before them sit level with the clock's digits. All three hang from
+     * the row's bottom, which left them low beside a 52sp clock. Moved by translation, so no layout pass is asked
+     * for; a date with Shamsi or lunar lines, or wrapped onto two lines, is left where the layout puts it.
+     */
+    private void centerDateOnDivider() {
+        View divider = findViewById(R.id.clockDivider);
+        TextView date = findViewById(R.id.date);
+        TextView clock = findViewById(R.id.clock);
+        if (divider == null || date == null || clock == null || clock.getParent() != date.getParent().getParent()) return;
+        View column = (View) date.getParent();
+        View shamsi = findViewById(R.id.shamsiDate);
+        View lunar = findViewById(R.id.lunarDate);
+        column.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {
+            boolean oneLine = date.getLineCount() == 1
+                    && (shamsi == null || shamsi.getVisibility() == View.GONE)
+                    && (lunar == null || lunar.getVisibility() == View.GONE);
+            if (divider.getVisibility() != View.VISIBLE || !oneLine || divider.getParent() != column.getParent()) {
+                column.setTranslationY(0f);
+                divider.setTranslationY(0f);
+                return;
+            }
+            // The middle of the clock's digits (a figure is about 0.7 em tall, standing on the baseline), so the
+            // weekday and date lines sit level with the time rather than with the bottom of its text box.
+            float digitsMiddle = clock.getTop() + clock.getBaseline() - 0.35f * clock.getTextSize();
+            float dividerMiddle = divider.getTop() + divider.getHeight() / 2f;
+            float columnMiddle = column.getTop() + column.getHeight() / 2f;
+            divider.setTranslationY(digitsMiddle - dividerMiddle);
+            column.setTranslationY(digitsMiddle - columnMiddle);
+        });
     }
 
     /** Centre the one-row header when the greeting and extra date lines are absent (#2265). */

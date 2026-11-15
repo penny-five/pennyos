@@ -2,7 +2,10 @@
   "background_color": "#14102E",
   "wallpaper": true,
   "dock_glass": true,
-  "app_glow": true,
+  "app_glow": false,
   "focus_overshoot": false,
-  "show_wordmark": true
+  "show_wordmark": true,
+  "labels_on_focus": true,
+  "ambient_glow": false,
+  "dock_even_padding": true
 }
